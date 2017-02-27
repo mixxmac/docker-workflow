@@ -1,29 +1,29 @@
-# Set the base image to Ubuntu
-FROM    ubuntu:trusty
-
-# File Author / Maintainer
-MAINTAINER Anand Mani Sankar
-
-# Install Node.js and other dependencies
-RUN apt-get update && \
-    apt-get -y install curl && \
-    curl -sL https://deb.nodesource.com/setup | sudo bash - && \
-    apt-get -y install python build-essential nodejs
+FROM node:6-alpine
 
 # Install nodemon
-RUN npm install -g nodemon
+# RUN npm install -g nodemon
+# RUN npm install -g pm2
+
+# Install a simple node server
+RUN npm install -g httpster
 
 # Provides cached layer for node_modules
-ADD package.json /tmp/package.json
+ADD ../package.json /tmp/package.json
 RUN cd /tmp && npm install
 RUN mkdir -p /src && cp -a /tmp/node_modules /src/
 
 # Define working directory
 WORKDIR /src
-ADD . /src
+ADD ../dist /src
 
 # Expose port
-EXPOSE  8080
+# EXPOSE 8080
 
-# Run app using nodemon
-CMD ["nodemon", "/src/index.js"]
+# Expose server default port
+EXPOSE 3333
+
+# Run the app using nodemon/pm2
+# CMD ["nodemon", "/src/index.js"]
+
+# Run the app using httpster
+CMD ["httpster", "dist"]
