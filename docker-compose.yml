@@ -11,20 +11,20 @@ node1:
     links:
         - redis
     ports:
-        - "8080"
+        - "8090:8080"
 node2:
     build: ./node
     links:
         - redis
     ports:
-        - "8080"
+        - "8091:8080"
 node3:
     build: ./node
     links:
         - redis
     ports:
-        - "8080"
+        - "8092:8080"
 redis:
     image: redis
     ports:
-        - "6379"
+        - "6379:6379"
